@@ -1,0 +1,51 @@
+- include_role:
+    name: nginx-server
+
+- name: install system packages needed
+  apt:
+    name: "{{ item }}"
+  with_items:
+  - git
+  - npm
+  - nodejs-legacy
+  - ruby-sass
+  - python-virtualenv
+  become: yes
+
+- name: create /home/dcraig/dancraig.net
+  file:
+    path: /home/dcraig/dancraig.net
+    state: directory
+    mode: 0755
+  become: yes
+  become_user: dcraig
+
+- name: clone github repo
+  git:
+    repo: git@github.com:drcraig/dancraig.net.git
+    dest: /home/dcraig/dancraig.net/
+    update: yes
+    key_file: /home/dcraig/.ssh/dcraig-webserver-idrsa
+    accept_hostkey: yes
+  become: yes
+  become_user: dcraig
+
+- name: npm install
+  npm:
+    path: /home/dcraig/dancraig.net/
+    global: yes
+  become: yes
+  become_user: dcraig
+
+- name: make the site
+  make:
+    chdir: /home/dcraig/dancraig.net/
+  become: yes
+  become_user: dcraig
+
+- name: nginx config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/sites-enabled/dancraig.net
+  become: yes
+  notify: reload nginx

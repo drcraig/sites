@@ -1,0 +1,6 @@
+- hosts: all
+  roles:
+  - role: secure-the-server
+  - role: user-dcraig
+  - role: dancraig.net
+  - role: broadsheet.dancraig.net

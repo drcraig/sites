@@ -1,0 +1,34 @@
+- name: install nginx
+  apt: name=nginx
+  become: yes
+
+- name: run nginx service
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+  become: yes
+
+- name: add markdown to mimetypes
+  lineinfile:
+    path: /etc/nginx/mime.types
+    regexp: 'text/plain'
+    line: '    text/plain                            md txt;'
+  become: yes
+  notify: reload nginx
+
+- name: disable default site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  become: yes
+  notify: reload nginx
+
+- name: create nginx log directory
+  file:
+    path: /var/log/nginx/
+    state: directory
+    mode: 0755
+  become: yes
+
+# TODO: logrotate on nginx

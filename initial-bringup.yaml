@@ -1,0 +1,16 @@
+- name: initial bring up
+  hosts: all
+  tasks:
+  - name: install aptitude
+    apt: name=aptitude
+    become: yes
+
+  - name: "apt update && atp upgrade"
+    apt: upgrade=yes update_cache=yes
+    become: yes
+
+  - name: change root password
+    user:
+      name: root
+      password: "{{ root_password|password_hash('sha512') }}"
+    become: yes

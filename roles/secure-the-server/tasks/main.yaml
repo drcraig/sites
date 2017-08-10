@@ -1,0 +1,46 @@
+- name: install fail2ban
+  apt: name=fail2ban
+  become: yes
+
+- name: disallow root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin '
+    line: 'PermitRootLogin no'
+  become: yes
+  notify: restart ssh
+
+- name: disallow password login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication '
+    line: 'PasswordAuthentication no'
+  become: yes
+  notify: restart ssh
+
+- name: install ufw
+  apt: name=ufw
+  become: yes
+
+- name: disallow by default
+  ufw:
+    policy: deny
+    state: enabled
+  become: yes
+
+- name: allow ssh
+  ufw:
+    rule: allow 
+    port: 22
+  become: yes
+  notify: reload ufw
+
+- name: allow http and https
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+  with_items:
+  - 80
+  - 443
+  become: yes
+  notify: reload ufw

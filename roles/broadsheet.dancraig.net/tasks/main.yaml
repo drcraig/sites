@@ -1,0 +1,71 @@
+- include_role:
+    name: nginx-server
+
+- name: create /home/dcraig/broadsheet.dancraig.net
+  file:
+    path: /home/dcraig/broadsheet.dancraig.net
+    state: directory
+    mode: 0755
+  become: yes
+  become_user: dcraig
+
+- name: clone github repo
+  git:
+    repo: https://github.com/drcraig/broadsheet.git
+    dest: /home/dcraig/broadsheet.dancraig.net/
+    update: yes
+    accept_hostkey: yes
+  become: yes
+  become_user: dcraig
+
+- name: install required system packages
+  apt:
+    name: python-dev
+  become: yes
+
+- name: install python packages
+  pip:
+    requirements: /home/dcraig/broadsheet.dancraig.net/requirements.txt
+    virtualenv: /home/dcraig/broadsheet.dancraig.net/.venv
+  become: yes
+  become_user: dcraig
+
+- name: create issues directory
+  file:
+    path: /home/dcraig/broadsheet.dancraig.net/issues
+    state: directory
+    mode: 0755
+  become: yes
+  become_user: dcraig
+
+- name: put publish script in place
+  copy:
+    src: publish.sh
+    dest: /home/dcraig/broadsheet.dancraig.net/new-publish.sh
+    mode: 0755
+  become: yes
+  become_user: dcraig
+
+- name: use bash for crontab
+  cron:
+    name: SHELL
+    env: yes
+    value: /bin/bash
+  become: yes
+  become_user: dcraig
+
+- name: set cron to run publish
+  cron:
+    name: publish broadsheet
+    job: "cd /home/dcraig/broadsheet.dancraig.net && source .venv/bin/activate && ./new-publish.sh | logger -t broadsheet"
+    special_time: hourly
+    user: dcraig
+  become: yes
+  become_user: dcraig
+
+- name: nginx config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/sites-enabled/broadsheet.dancraig.net
+  become: yes
+  notify: reload nginx
