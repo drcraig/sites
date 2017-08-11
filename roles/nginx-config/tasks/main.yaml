@@ -1,0 +1,6 @@
+- name: nginx config
+  template:
+    src: nginx.j2.conf
+    dest: "/etc/nginx/sites-enabled/{{ hostname }}"
+  become: yes
+  notify: reload nginx

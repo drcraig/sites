@@ -1,27 +1,15 @@
 - include_role:
     name: nginx-server
 
-- name: create /home/dcraig/hondacraig.com
-  file:
+- include_role:
+    name: cloned-repo
+  vars:
     path: /home/dcraig/hondacraig.com
-    state: directory
-    mode: 0755
-  become: yes
-  become_user: dcraig
-
-- name: clone github repo
-  git:
     repo: https://github.com/drcraig/hondacraig.com.git
-    dest: /home/dcraig/hondacraig.com/
-    update: yes
-    accept_hostkey: yes
-  become: yes
-  become_user: dcraig
+    user: dcraig
 
-- name: nginx config
-  copy:
-    src: nginx.conf
-    dest: /etc/nginx/sites-enabled/hondacraig.com
-  become: yes
-  notify: reload nginx
-
+- include_role:
+    name: nginx-config
+  vars:
+    root: /home/dcraig/hondacraig.com
+    hostname: hondacraig.localhost

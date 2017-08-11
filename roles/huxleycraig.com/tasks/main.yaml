@@ -8,11 +8,8 @@
     repo: https://github.com/drcraig/huxleycraig.com.git
     user: dcraig
 
-- name: nginx config
-  copy:
-    src: nginx.conf
-    dest: /etc/nginx/sites-enabled/huxleycraig.com
-  become: yes
-  notify: reload nginx
-
-
+- include_role:
+    name: nginx-config
+  vars:
+    root: /home/dcraig/huxleycraig.com
+    hostname: huxleycraig.localhost

@@ -12,22 +12,12 @@
   - python-virtualenv
   become: yes
 
-- name: create /home/dcraig/makewayforpiggies.huxleycraig.com
-  file:
+- include_role:
+    name: cloned-repo
+  vars:
     path: /home/dcraig/makewayforpiggies.huxleycraig.com
-    state: directory
-    mode: 0755
-  become: yes
-  become_user: dcraig
-
-- name: clone github repo
-  git:
     repo: https://github.com/drcraig/make-way-for-piggies.git
-    dest: /home/dcraig/makewayforpiggies.huxleycraig.com/
-    update: yes
-    accept_hostkey: yes
-  become: yes
-  become_user: dcraig
+    user: dcraig
 
 - name: make the site
   make:
@@ -35,9 +25,8 @@
   become: yes
   become_user: dcraig
 
-- name: nginx config
-  copy:
-    src: nginx.conf
-    dest: /etc/nginx/sites-enabled/makewayforpiggies.huxleycraig.com
-  become: yes
-  notify: reload nginx
+- include_role:
+    name: nginx-config
+  vars:
+    root: /home/dcraig/makewayforpiggies.huxleycraig.com
+    hostname: makewayforpiggies.localhost

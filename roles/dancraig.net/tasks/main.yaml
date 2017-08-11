@@ -12,23 +12,12 @@
   - python-virtualenv
   become: yes
 
-- name: create /home/dcraig/dancraig.net
-  file:
+- include_role:
+    name: cloned-repo
+  vars:
     path: /home/dcraig/dancraig.net
-    state: directory
-    mode: 0755
-  become: yes
-  become_user: dcraig
-
-- name: clone github repo
-  git:
-    repo: git@github.com:drcraig/dancraig.net.git
-    dest: /home/dcraig/dancraig.net/
-    update: yes
-    key_file: /home/dcraig/.ssh/dcraig-webserver-idrsa
-    accept_hostkey: yes
-  become: yes
-  become_user: dcraig
+    repo: https://github.com/drcraig/dancraig.net.git
+    user: dcraig
 
 - name: npm install
   npm:
@@ -43,9 +32,9 @@
   become: yes
   become_user: dcraig
 
-- name: nginx config
-  copy:
-    src: nginx.conf
-    dest: /etc/nginx/sites-enabled/dancraig.net
-  become: yes
-  notify: reload nginx
+
+- include_role:
+    name: nginx-config
+  vars:
+    root: /home/dcraig/dancraig.net/app
+    hostname: dancraig.localhost
