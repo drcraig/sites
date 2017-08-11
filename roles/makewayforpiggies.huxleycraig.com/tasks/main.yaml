@@ -28,5 +28,5 @@
 - include_role:
     name: nginx-config
   vars:
-    root: /home/dcraig/makewayforpiggies.huxleycraig.com
+    root: /home/dcraig/makewayforpiggies.huxleycraig.com/build
     hostname: "{{ makewayforpiggies_hostname }}"

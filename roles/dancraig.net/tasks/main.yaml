@@ -24,7 +24,12 @@
     path: /home/dcraig/dancraig.net/
     global: yes
   become: yes
-  become_user: dcraig
+
+- name: npm install grunt
+  npm:
+    name: grunt-cli
+    global: yes
+  become: yes
 
 - name: make the site
   make:
