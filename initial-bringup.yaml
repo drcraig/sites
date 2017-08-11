@@ -12,5 +12,5 @@
   - name: change root password
     user:
       name: root
-      password: "{{ root_password|password_hash('sha512') }}"
+      password: "$6$xoQ7B8jzoa$Q18QxoMB/UabRzyCG.uVRjAUMR9TaGdMwzpFyv7vxpQ35.HvHa.mj9ICBuEKQRglhIE.eWictuB8RfYZq8lmb/"
     become: yes

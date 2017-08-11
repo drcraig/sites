@@ -1,0 +1,17 @@
+- name: "create {{ user }}"
+  user:
+    name: "{{ user }}"
+    comment: "{{ full_name }}"
+    groups: sudo,ssh
+    shell: /bin/bash
+    password: "{{ password }}"
+  become: true
+
+- name: create ~/.ssh
+  file:
+    path: "/home/{{ user }}/.ssh"
+    state: directory
+    mode: 0700
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  become: yes

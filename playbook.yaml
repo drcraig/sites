@@ -1,7 +1,10 @@
 - hosts: all
   roles:
   - role: secure-the-server
-  - role: user-dcraig
+  - role: user
+    user: dcraig
+    full_name: Dan Craig
+    password: "$6$dvCEsOzKAsClIj$tO869urfEaKYWGZRFx5Z6cmKBLrLkKyjaW8C/0FHATENAWfxBRB0mvAaJUAWbQL9V37nKBuMrixNjFtsW5/7Z/"
   - role: dancraig.net
   - role: broadsheet.dancraig.net
   - role: makewayforpiggies.huxleycraig.com
