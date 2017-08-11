@@ -1,0 +1,17 @@
+- name: "create {{ path }}"
+  file:
+    path: "{{ path }}"
+    state: directory
+    mode: 0755
+  become: yes
+  become_user: "{{ user }}"
+
+- name: clone github repo
+  git:
+    repo: "{{ repo }}"
+    dest: "{{ path }}"
+    update: yes
+    accept_hostkey: yes
+  become: yes
+  become_user: "{{ user }}"
+
