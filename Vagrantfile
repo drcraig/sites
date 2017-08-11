@@ -36,6 +36,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "playbook", type:"ansible" do |ansible|
     ansible.playbook = "playbook.yaml"
     ansible.vault_password_file = "vault_pass.txt"
+    ansible.extra_vars = "local_hostnames.yaml"
     ansible.raw_arguments = [
         "--diff"
     ]

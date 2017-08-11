@@ -37,4 +37,4 @@
     name: nginx-config
   vars:
     root: /home/dcraig/dancraig.net/app
-    hostname: dancraig.localhost
+    hostname: "{{ dancraig_hostname }}"

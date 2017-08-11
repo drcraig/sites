@@ -29,4 +29,4 @@
     name: nginx-config
   vars:
     root: /home/dcraig/makewayforpiggies.huxleycraig.com
-    hostname: makewayforpiggies.localhost
+    hostname: "{{ makewayforpiggies_hostname }}"

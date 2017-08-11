@@ -57,4 +57,4 @@
     name: nginx-config
   vars:
     root: /home/dcraig/broadsheet.dancraig.net/issues
-    hostname: broadsheet.localhost
+    hostname: "{{ dancraig_hostname }}"

@@ -12,4 +12,4 @@
     name: nginx-config
   vars:
     root: /home/dcraig/huxleycraig.com
-    hostname: huxleycraig.localhost
+    hostname: "{{ huxleycraig_hostname }}"
