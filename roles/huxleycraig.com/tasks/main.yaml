@@ -1,0 +1,28 @@
+- include_role:
+    name: nginx-server
+
+- name: create /home/dcraig/huxleycraig.com
+  file:
+    path: /home/dcraig/huxleycraig.com
+    state: directory
+    mode: 0755
+  become: yes
+  become_user: dcraig
+
+- name: clone github repo
+  git:
+    repo: https://github.com/drcraig/huxleycraig.com.git
+    dest: /home/dcraig/huxleycraig.com/
+    update: yes
+    accept_hostkey: yes
+  become: yes
+  become_user: dcraig
+
+- name: nginx config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/sites-enabled/huxleycraig.com
+  become: yes
+  notify: reload nginx
+
+

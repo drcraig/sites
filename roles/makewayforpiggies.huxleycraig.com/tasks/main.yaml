@@ -1,0 +1,43 @@
+- include_role:
+    name: nginx-server
+
+- name: install system packages needed
+  apt:
+    name: "{{ item }}"
+  with_items:
+  - git
+  - texlive-latex-base
+  - texlive-latex-recommended
+  - texlive-latex-extra
+  - python-virtualenv
+  become: yes
+
+- name: create /home/dcraig/makewayforpiggies.huxleycraig.com
+  file:
+    path: /home/dcraig/makewayforpiggies.huxleycraig.com
+    state: directory
+    mode: 0755
+  become: yes
+  become_user: dcraig
+
+- name: clone github repo
+  git:
+    repo: https://github.com/drcraig/make-way-for-piggies.git
+    dest: /home/dcraig/makewayforpiggies.huxleycraig.com/
+    update: yes
+    accept_hostkey: yes
+  become: yes
+  become_user: dcraig
+
+- name: make the site
+  make:
+    chdir: /home/dcraig/makewayforpiggies.huxleycraig.com/
+  become: yes
+  become_user: dcraig
+
+- name: nginx config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/sites-enabled/makewayforpiggies.huxleycraig.com
+  become: yes
+  notify: reload nginx
