@@ -37,9 +37,9 @@
   become: yes
   become_user: dcraig
 
-
-- include_role:
-    name: nginx-config
-  vars:
-    root: /home/dcraig/dancraig.net/app
-    hostname: "{{ dancraig_hostname }}"
+- name: nginx config
+  template:
+    src: nginx.j2.conf
+    dest: /etc/nginx/sites-enabled/dancraig.net
+  become: yes
+  notify: reload nginx
