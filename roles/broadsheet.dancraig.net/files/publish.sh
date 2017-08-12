@@ -4,7 +4,7 @@ set -e -x
 cp broadsheet/templates/*.css issues/
 
 today=$(date +%Y-%m-%d)
-yesterday=$(find issues/ -mtime +1 -type f | tail -n 1 | grep -o "[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" || true)
+yesterday=$(find issues/ -mtime +1 -type f | sort -n | tail -n 1 | grep -o "[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" || true)
 
 if [[ -n "$yesterday" ]]; then
 yesterday_arg="-p ${yesterday}"
