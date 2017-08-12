@@ -14,3 +14,10 @@
       name: root
       password: "$6$xoQ7B8jzoa$Q18QxoMB/UabRzyCG.uVRjAUMR9TaGdMwzpFyv7vxpQ35.HvHa.mj9ICBuEKQRglhIE.eWictuB8RfYZq8lmb/"
     become: yes
+
+  roles:
+  - role: user
+    user: dcraig
+    full_name: Dan Craig
+    password: "$6$dvCEsOzKAsClIj$tO869urfEaKYWGZRFx5Z6cmKBLrLkKyjaW8C/0FHATENAWfxBRB0mvAaJUAWbQL9V37nKBuMrixNjFtsW5/7Z/"
+    key: dcraig_id_rsa.pub
