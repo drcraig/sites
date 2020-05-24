@@ -3,13 +3,12 @@
 
 - name: install system packages needed
   apt:
-    name: "{{ item }}"
-  with_items:
-  - git
-  - npm
-  - nodejs-legacy
-  - ruby-sass
-  - python-virtualenv
+    name:
+    - git
+    - npm
+    - nodejs-legacy
+    - ruby-sass
+    - python-virtualenv
   become: yes
 
 - include_role:
