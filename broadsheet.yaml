@@ -1,0 +1,3 @@
+- hosts: all
+  roles:
+  - role: broadsheet.dancraig.net

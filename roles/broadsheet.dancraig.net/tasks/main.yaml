@@ -8,15 +8,25 @@
     repo: https://github.com/drcraig/broadsheet.git
     user: dcraig
 
+- name: add deadsnakes PPA for python3.7
+  apt_repository:
+    repo: ppa:deadsnakes/ppa
+  become: yes
+
 - name: install required system packages
   apt:
-    name: python-dev
+    name:
+    - python-dev
+    - python3.7
+    - python3.7-dev
+    - python3.7-venv
   become: yes
 
 - name: install python packages
   pip:
     requirements: /home/dcraig/broadsheet.dancraig.net/requirements.txt
-    virtualenv: /home/dcraig/broadsheet.dancraig.net/.venv
+    virtualenv: /home/dcraig/broadsheet.dancraig.net/.venv37
+    virtualenv_python: python3.7
   become: yes
   become_user: dcraig
 
@@ -47,7 +57,7 @@
 - name: set cron to run publish
   cron:
     name: publish broadsheet
-    job: "cd /home/dcraig/broadsheet.dancraig.net && source .venv/bin/activate && ./new-publish.sh | logger -t broadsheet"
+    job: "cd /home/dcraig/broadsheet.dancraig.net && source .venv37/bin/activate && ./new-publish.sh | logger -t broadsheet"
     special_time: hourly
     user: dcraig
   become: yes
